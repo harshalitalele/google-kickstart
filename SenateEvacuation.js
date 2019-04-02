@@ -24,7 +24,7 @@ rl.on('line', function(line) {
     process.exit(0);
 });*/
 
-var partyMembers = '4 3 3';
+var partyMembers = '1 1 2';
 var parties = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
 function preparePlan() {
@@ -54,24 +54,48 @@ function preparePlan() {
     });
     
     while(remainingMem != 0) {
-        var e = '';
-            if(partiesCntArr[evacIndex].cnt >= 2) {
-                e = partiesCntArr[evacIndex].n + partiesCntArr[evacIndex].n;
-                evacPlan.push(e);
-                partiesCntArr[evacIndex].cnt -= 2;
-            } else if(partiesCntArr[evacIndex].cnt > 0) {
-                e = partiesCntArr[evacIndex].n + partiesCntArr[evacIndex+1].n;
-                evacPlan.push(e);
-                partiesCntArr[evacIndex].cnt -= 1;
-                partiesCntArr[evacIndex+1].cnt -= 1;
-                evacIndex++;
+        var plan = getCurrentEvacPlan(partiesCntArr, evacIndex),
+            e = plan[0];
+        partiesCntArr.sort(function(p1, p2) {
+            if(p1.cnt > p2.cnt) {
+                return -1;
             } else {
-                evacIndex++;
-                e = partiesCntArr[evacIndex].n + partiesCntArr[evacIndex].n;
-                evacPlan.push(e);
-                partiesCntArr[evacIndex].cnt -= 2;
+                1;
             }
-        remainingMem -= 2;
+        });
+        if(!e) {
+            break;
+        }
+        
+        evacIndex += plan[1];
+        
+        evacPlan.push(e);
+        remainingMem -= e.length;
     }
     alert(evacPlan);
+}
+
+function getCurrentEvacPlan(partiesCntArr, i) {
+    if(!partiesCntArr[i]) {
+        return [false];
+    }
+    if(!partiesCntArr[i].cnt > 0) {
+        return ['', 1];
+    } else if(partiesCntArr[i].cnt - partiesCntArr[i+1].cnt >= 2) {
+        var e = partiesCntArr[i].n + partiesCntArr[i].n,
+            index = 0;
+        partiesCntArr[i].cnt -= 2;
+        return [e, index];
+    } else if(partiesCntArr[i+1].cnt > 0) {
+        var e = partiesCntArr[i].n + partiesCntArr[i+1].n,
+            index = 0;
+        partiesCntArr[i].cnt--;
+        partiesCntArr[i+1].cnt--;
+        return [e, index];
+    } else {
+        var e = partiesCntArr[i].n,
+            index = 0;
+        partiesCntArr[i].cnt--;
+        return [e, index];
+    }
 }
