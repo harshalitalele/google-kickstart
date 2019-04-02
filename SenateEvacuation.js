@@ -1,4 +1,4 @@
-/*var readline = require('readline');
+var readline = require('readline');
 var rl = readline.createInterface(process.stdin, process.stdout);
 var parties = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
@@ -14,20 +14,18 @@ rl.on('line', function(line) {
     } else if(expect === 'party_members') {
         evac_plan = preparePlan(line);
         case_counter++;
-        console.log("Case #" + case_counter + ": " + evac_plan);
+        console.log("Case #" + case_counter + ": " + evac_plan.join(" "));
         if(case_counter >= num_test_cases) {
             rl.close();
+        } else {
+            expect = 'num_parties';
         }
     }
-}
 }).on('close',function(){
     process.exit(0);
-});*/
+});
 
-var partyMembers = '1 1 2';
-var parties = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-
-function preparePlan() {
+function preparePlan(partyMembers) {
     var memberCnt = partyMembers.split(' '),
         totMem = 0,
         partiesCntArr = [],
@@ -49,9 +47,11 @@ function preparePlan() {
         if(p1.cnt > p2.cnt) {
             return -1;
         } else {
-            1;
+            return 1;
         }
     });
+    
+    console.log(JSON.stringify(partiesCntArr));
     
     while(remainingMem != 0) {
         var plan = getCurrentEvacPlan(partiesCntArr, evacIndex),
@@ -60,7 +60,7 @@ function preparePlan() {
             if(p1.cnt > p2.cnt) {
                 return -1;
             } else {
-                1;
+                return 1;
             }
         });
         if(!e) {
@@ -72,7 +72,8 @@ function preparePlan() {
         evacPlan.push(e);
         remainingMem -= e.length;
     }
-    alert(evacPlan);
+    console.log(evacPlan);
+    return evacPlan;
 }
 
 function getCurrentEvacPlan(partiesCntArr, i) {
