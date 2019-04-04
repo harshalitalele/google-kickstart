@@ -1,5 +1,7 @@
-var s = "+-+-+-+-",
-    k = 3,
+//To Do: Try to get all -'s together and then solve
+
+var s = "++-++-+-+++--++---",
+    k = 5,
     selectionStart = false,
     selectedChars = [];
 
@@ -22,8 +24,8 @@ function selectSeries(elem) {
 }
 
 function flipChars() {
-    var i1 = selectedChars[0],
-        i2 = selectedChars[1],
+    var i1 = parseInt(selectedChars[0]),
+        i2 = parseInt(selectedChars[1]),
         charElems = document.getElementById("sample").children;
     if(i1 > i2) {
         var temp = i1;
