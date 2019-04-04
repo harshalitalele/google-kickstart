@@ -25,6 +25,8 @@ rl.on('line', function(line) {
     process.exit(0);
 });
 
+//var partyMembers = "4 1 2";
+
 function preparePlan(partyMembers) {
     var memberCnt = partyMembers.split(' '),
         totMem = 0,
@@ -51,10 +53,14 @@ function preparePlan(partyMembers) {
         }
     });
     
-    console.log(JSON.stringify(partiesCntArr));
+    //console.log(JSON.stringify(partiesCntArr));
     
     while(remainingMem != 0) {
-        var plan = getCurrentEvacPlan(partiesCntArr, evacIndex),
+        var solo = null;
+        if(remainingMem == 3) {
+            solo = true
+        }
+        var plan = getCurrentEvacPlan(partiesCntArr, evacIndex, solo),
             e = plan[0];
         partiesCntArr.sort(function(p1, p2) {
             if(p1.cnt > p2.cnt) {
@@ -72,11 +78,11 @@ function preparePlan(partyMembers) {
         evacPlan.push(e);
         remainingMem -= e.length;
     }
-    console.log(evacPlan);
+    //console.log(evacPlan);
     return evacPlan;
 }
 
-function getCurrentEvacPlan(partiesCntArr, i) {
+function getCurrentEvacPlan(partiesCntArr, i, solo) {
     if(!partiesCntArr[i]) {
         return [false];
     }
@@ -86,6 +92,11 @@ function getCurrentEvacPlan(partiesCntArr, i) {
         var e = partiesCntArr[i].n + partiesCntArr[i].n,
             index = 0;
         partiesCntArr[i].cnt -= 2;
+        return [e, index];
+    } else if(solo) {
+        var e = partiesCntArr[i].n,
+            index = 0;
+        partiesCntArr[i].cnt--;
         return [e, index];
     } else if(partiesCntArr[i+1].cnt > 0) {
         var e = partiesCntArr[i].n + partiesCntArr[i+1].n,
