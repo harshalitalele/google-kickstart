@@ -1,35 +1,27 @@
-/*var readline = require('readline');
-var rl = readline.createInterface(process.stdin, process.stdout);
+var fs  = require("fs");
 
-expect = 'begin';
-rl.on('line', function(line) {
-    if (expect === 'begin') {
+var lineCnt = 0;
+fs.readFileSync('./file.in').toString().split('\n').forEach(function (line) {
+    if(lineCnt === 0) {
         num_test_cases = parseInt(line);
-        expect = 'case_input';
-        case_counter = 0;
     } else {
-        case_counter++;
         var caseInput = line.split(" "),
             pancakeOrder = caseInput[0],
             flipperSize = parseInt(caseInput[1]);
         var ans = getMinFlipTimes(pancakeOrder, flipperSize);
-        console.log("Case #" + case_counter + ": " + ans);
-        if(case_counter == num_test_cases) {
-            rl.close();
-        }
+        /*if(lineCnt == num_test_cases) {
+            return;
+        }*/
+        fs.appendFileSync("./file.out", "Case #" + lineCnt + ": " + ans + "\n");
     }
-}).on('close',function(){
-    process.exit(0);
-});*/
+    lineCnt++;    
+});
 
 function strSplice(s, start, delCount, newSubStr) {
     return s.slice(0, start) + newSubStr + s.slice(parseInt(start) + Math.abs(delCount));
 };
 
-var pancakes = '+-+-',
-    k = 3;
-
-function getMinFlipTimes() {
+function getMinFlipTimes(pancakes, k) {
     var fblank = pancakes.indexOf('-'),
         flipCnt = 0;
     while(fblank != -1) {
