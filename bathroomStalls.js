@@ -1,36 +1,18 @@
-var n = 4,
-    k = 2;
-
-function seat(i) {
-    this.index = i;
-    this.ls = 0;
-    this.rs = 0;
-}
+var n = 1000,
+    k = 1;
 
 function minMaxDistantSeats() {
-    var stalls = new Array(n+2),
-        curBestSeat = 1;
-    stalls[0] = 1;
-    stalls[stalls.length-1] = 1;
-    for(var i = 1; i < stalls.length-2;i++) {
-        stalls[i] = 0;
-    }
     
-    for(i = 0; i < k; i++) {
-        var seatId = markBestSeat(stalls);
-        if(i == k-1) {
-            // return with min max
-        } else {
-            getBestSeat(stalls);
-        }
+    var d = getDivisions(k);
+    var ans = n / Math.pow(2, d),
+        max = Math.floor(ans),
+        min = max;
+    if((n/k) % 2 != 1 && min != 0) {
+        min--;
     }
-    // getLsRs(stalls, 1);
+    console.log(max + ", " + min);
 }
 
-function getBestSeat(stalls) {
-    
-}
-
-function getLsRs(stalls, i) {
-    //
+function getDivisions(k) {
+	return Math.floor(Math.log(k)/Math.log(2)) + 1;
 }
