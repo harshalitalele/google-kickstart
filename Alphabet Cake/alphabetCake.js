@@ -1,4 +1,4 @@
-var cake = [['A','?','B'], ['?', '?', '?']];
+var cake = [['?', '?', '?'], ['A','?','B'], ['?', '?', '?'], ['?', 'D', 'E'], ['?', 'J', '?']];
 
 function distributeRemainingSlices() {
     // horizontal fill
@@ -7,24 +7,32 @@ function distributeRemainingSlices() {
         updateRow(row);
     }
     
-    var rowLen = cake[0].length,
-        prevLiveRow = 0;
-    for(r in cake) {
-        if(cake[r][0] == '?') {
-            if(r > 0) {
-                copyPrevRow(cake, r, prevLiveRow);
-            } else {
-                copyPrevRow(cake, r, prevLiveRow);
-            }            
-        } else {
-            prevLiveRow = r;
-        }
-    }
     // vertical fill
+    var rowLen = cake[0].length,
+        prevLiveRow = 0,
+        st = null,
+        en = null;
+    for(r in cake) {
+        if(cake[r][0] != '?' && cake[r][0] != undefined) {
+            copyPrevRow(cake, st, en);
+            st = null;
+            en = null;
+        } else {
+            if(st != null) {
+                en = r;
+            } else {
+                st = r;
+                en = r;
+            }
+        }
+        console.log(cake[r]);
+    }
+    if(st != null) {
+        copyPrevRow(cake, st, en);
+    }
 }
 
-var row = [['A', '?', 'B'], ['?', '?', '?'], ['A', '?', 'B']];
-function updateRow() {
+function updateRow(row) {
     var st = null, 
         en = null;
     for(var i in row) {
@@ -45,7 +53,6 @@ function updateRow() {
     if(st != null) {
         fillStEn(row[st-1], st, en, row);
     }
-    console.log(row);
 }
 
 function fillStEn(letter, st, en, row) {
@@ -57,10 +64,21 @@ function fillStEn(letter, st, en, row) {
     }
 }
 
-function copyPrevRow(cake, r, rowToCopy) {
-    var row = cake[r],
-        anotherRow = cake[rowToCopy];
-    for(var i in row) {
-        row[i] = anotherRow[i];
+function copyPrevRow(cake, st, en) {
+    var rowToCopy;
+    if(st == null) {
+        return;
+    }
+    if(en < cake.length-1) {
+        rowToCopy = cake[Number(en) + 1];
+    } else {
+        rowToCopy = cake[st - 1];
+    }
+    
+    for(var j in rowToCopy) {
+        var letter = rowToCopy[j];
+        for(var i = st; i <= en; i++) {
+            cake[i][j] = letter;
+        }
     }
 }
