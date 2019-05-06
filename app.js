@@ -1,7 +1,50 @@
 //To Do: Try to get all -'s together and then solve
 
+var num = "857945",
+    k = 9;
+
+function divide() {
+    var numlen = num.length,
+        ans = "",
+        stIndex = 0,
+        numkeep = num.slice(stIndex,stIndex + 3),
+        carryon = "";
+    while(numkeep.length > 0) {
+        var ansstr = (carryon + numkeep) / k;
+        ansstr = ansstr.toString().split(".");
+        ans += ansstr[0];
+        stIndex += 3 - carryon.length;
+        carryon = (carryon + numkeep) % k ? (carryon + numkeep) % k + "" : "";
+        numkeep = num.slice(stIndex,stIndex + 3 - carryon.length);
+    }
+    var dec = carryon / k;
+    dec = dec ? dec.toString().split(".")[1] : 0;
+    ans = ans + "." + dec;
+    console.log(ans);
+}
+
+function divide(num, k) {
+    var numlen = num.length,
+        ans = "",
+        stIndex = 0,
+        numkeep = num.slice(stIndex,stIndex + 16),
+        carryon = "";
+    while(numkeep.length > 0) {
+        var ansstr = (carryon + numkeep) / k;
+        ansstr = ansstr.toString().split(".");
+        ans += ansstr[0];
+        stIndex += 16 - carryon.length;
+        carryon = (carryon + numkeep) % k ? (carryon + numkeep) % k + "" : "";
+        numkeep = num.slice(stIndex,stIndex +  - carryon.length);
+    }
+    var dec = carryon / k;
+    dec = dec ? dec.toString().split(".")[1] : 0;
+    ans = ans + "." + dec;
+    console.log(ans);
+}
+
 var s = "++-++-+-+++--++---",
-    k = 5,
+    ka = 2,
     selectionStart = false,
     selectedChars = [];
 
